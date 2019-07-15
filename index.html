@@ -42,12 +42,13 @@
       // displaySportInfo function re-renders the HTML to display the appropriate content
       function displaySportInfo() {
 
-        var q = sports[0];
+        // var q: = sports[0];
+        
 
-        // var userInput = $(this).attr("data-name");
+        var userInput = $(this).attr("data-name");
         // var url = "https://api.giphy.com/v1/gifs/trending?api_key=Wi2mCeJmX954hNbqt9MQGGbXvMxPuiZq"
 
-        var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=Ap8QRdDHAPDe7HwTj4rUCHSMRjiIZ8p0&q=" + q + "&limit=10&offset=0&rating=G&lang=en"
+        var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=Ap8QRdDHAPDe7HwTj4rUCHSMRjiIZ8p0&q=" + userInput + "&limit=10&offset=0&rating=G&lang=en"
 
         // Creating an AJAX call for the specific sports button being clicked
         $.ajax({
@@ -60,8 +61,10 @@
           // Creating a div to hold the sports
           var sportDiv = $("<div class= sports>");
 
+          // for loop starts here 
+            for (var i = 0; i < sports.length; i++ ){
          // Retrieving the URL for the image
-          var imgURL = response.Poster;
+          var imgURL = response.data[i].images.fixed_height.url;
 
           // Creating an element to hold the image
           var image = $("<img>").attr("src", imgURL);
@@ -71,15 +74,18 @@
 
           // Putting the  sports team above the previous team
           $("#sports-view").prepend(sportDiv);
-          console.log("New Gif")
+
+          // for loopdata
+            }
         });
+        
 
       }
 
       // Function for displaying sports data
       function renderButtons() {
 
-        // Deleting the sports team prior to adding new movies
+        // Deleting the sports team prior to adding new sport
         // (this is necessary otherwise you will have repeat buttons)
         $("#buttons-view").empty();
 
@@ -101,15 +107,16 @@
         }
       }
 
-      // This function handles events where a movie button is clicked
+      // This function handles events where a sports button is clicked
       $("#add-sport").on("click", function(event) {
+        alert("Add Sports")
         event.preventDefault();
         // This line grabs the input from the textbox
         var sport = $("#sport-input").val().trim();
 
-        // Adding movie from the textbox to our array
+        // Adding sports from the textbox to our array
         sports.push(sport);
-        console.log("Hello")
+        
 
         // Calling renderButtons which handles the processing of our sports array
         renderButtons();
@@ -117,6 +124,7 @@
 
       // Adding a click event listener to all elements with a class of "sport-btn"
       $(document).on("click", ".sport-btn", displaySportInfo);
+      
 
       // Calling the renderButtons function to display the intial buttons
       renderButtons();
